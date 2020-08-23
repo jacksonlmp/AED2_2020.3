@@ -47,12 +47,16 @@ int main(int argc, char *argv[]){
                 printf("[%d]", quantElementos(arvore));
                 break;
             case 9:
-                //Antecessor
+                //Busca-de-Elemento
+                scanf("%d", &valor);         
+                printf("[%d]", existe(arvore, valor));
                 break;
             case 10:
-                //Sucessor
+                //Antecessor
                 break;
             case 11:
+                //Sucessor
+            case 12:
                 //Remover
             default:
                 break;     

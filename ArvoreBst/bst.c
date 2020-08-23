@@ -85,10 +85,22 @@ int altura(no* raiz){
     return 1 + MAX(altura(raiz->esq), altura(raiz->dir));
 }
 
+int quantElementos(no *raiz){
+    if(raiz == NULL){
+        return 0;
+    }
+    else{
+        int contEsq = quantElementos(raiz->esq);
+        int contDir = quantElementos(raiz->dir);
+        return contEsq + contDir + 1;
+    }
+}
+
+
 int existe(no *raiz, int chave){
     if(raiz != NULL){
         if(raiz->chave == chave){
-            return raiz;
+            return 1;
         }
         else{
             if(chave > raiz->chave){
@@ -99,18 +111,7 @@ int existe(no *raiz, int chave){
             }    
         }
     }
-    return NULL;
-}
-
-int quantElementos(no *raiz){
-    if(raiz == NULL){
-        return 0;
-    }
-    else{
-        int contEsq = quantElementos(raiz->esq);
-        int contDir = quantElementos(raiz->dir);
-        return contEsq + contDir + 1;
-    }
+    return 0;
 }
 
 
