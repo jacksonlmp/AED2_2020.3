@@ -102,6 +102,17 @@ int existe(no *raiz, int chave){
     return NULL;
 }
 
+int quantElementos(no *raiz){
+    if(raiz == NULL){
+        return 0;
+    }
+    else{
+        int contEsq = quantElementos(raiz->esq);
+        int contDir = quantElementos(raiz->dir);
+        return contEsq + contDir + 1;
+    }
+}
+
 
 
 

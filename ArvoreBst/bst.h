@@ -14,7 +14,7 @@ no* menorElemento(no *raiz);
 no* predecessor(no *raiz);
 no* sucessor(no *raiz);
 
-int quantidade_elementos(no *raiz);
+int quantElementos(no *raiz);
 int existe(no *raiz, int chave);    //1 ou 0
 int altura(no *raiz);
 int MAX(int valorA, int valorB);
