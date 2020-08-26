@@ -9,8 +9,10 @@ typedef struct no{
 
 no* inserir(no *raiz, int chave);
 no* remover(no *raiz, int chave);
+
 no* maiorElemento(no *raiz);
 no* menorElemento(no *raiz);
+
 no* predecessor(no *raiz);
 no* sucessor(no *raiz);
 

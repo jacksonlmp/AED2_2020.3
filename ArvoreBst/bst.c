@@ -58,7 +58,7 @@ no* maiorElemento(no *raiz){
     while(raiz->dir != NULL){
         raiz = raiz->dir;
     }
-    printf("[%d]", raiz->chave);
+    return raiz->chave;
 }
 
 
@@ -112,6 +112,31 @@ int existe(no *raiz, int chave){
         }
     }
     return 0;
+}
+
+no* remover(no *raiz, int chave){
+    if(raiz == NULL){
+        return NULL;
+    }
+    if(chave == raiz->chave){
+        if(raiz->dir == NULL){
+            return raiz->esq;
+        }
+        if(raiz->esq == NULL){
+            return raiz->dir;    
+        }
+
+        raiz->chave = maiorElemento(raiz->esq);
+        raiz->esq = remover(raiz->esq, raiz->chave);
+        return raiz;
+    }
+
+    if(chave > raiz->chave){
+        raiz->dir = remover(raiz->dir, chave);
+    }
+    else{
+        raiz->esq = remover(raiz->esq, chave);
+    }
 }
 
 

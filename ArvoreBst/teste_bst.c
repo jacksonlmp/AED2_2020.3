@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
                 break;
             case 5:
                 //Maior-Elemento
-                maiorElemento(arvore);
+                printf("[%d]", maiorElemento(arvore));
                 break;
             case 6:
                 //Menor-Elemento
@@ -58,6 +58,9 @@ int main(int argc, char *argv[]){
                 //Sucessor
             case 12:
                 //Remover
+                scanf("%d", &valor);
+                arvore = remover(arvore, valor);
+                break;
             default:
                 break;     
         }
