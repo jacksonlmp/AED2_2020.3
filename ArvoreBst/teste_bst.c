@@ -3,12 +3,14 @@
 
 int main(int argc, char *argv[]){
     no *arvore;
+    no *novo;
 
     //Inicialização da Arvore
     arvore = NULL;
     int opcao;
 
     do{
+        novo = NULL;
         scanf("%d", &opcao);
         switch(opcao){
             int chave;
@@ -32,11 +34,11 @@ int main(int argc, char *argv[]){
                 break;
             case 5:
                 //Maior-Elemento
-                printf("[%d]", maiorElemento(arvore));
+                printf("[%d]", maior(arvore));
                 break;
             case 6:
                 //Menor-Elemento
-                menorElemento(arvore);
+                menor(arvore);
                 break;
             case 7:
                 //Altura
@@ -44,7 +46,7 @@ int main(int argc, char *argv[]){
                 break;
             case 8:
                 //Quantidade-de-Elementos
-                printf("[%d]", quantElementos(arvore));
+                printf("[%d]", quantidade_elementos(arvore));
                 break;
             case 9:
                 //Busca-de-Elemento
@@ -53,9 +55,16 @@ int main(int argc, char *argv[]){
                 break;
             case 10:
                 //Antecessor
+                novo = inserir(novo, -1);
+                scanf("%d", &valor);
+                printf("[%d]", predecessor(arvore, valor, novo));
                 break;
             case 11:
                 //Sucessor
+                novo = inserir(novo, -1);
+                scanf("%d", &valor);
+                printf("[%d]", sucessor(arvore, valor, novo));
+                break;
             case 12:
                 //Remover
                 scanf("%d", &valor);

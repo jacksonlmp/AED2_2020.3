@@ -54,7 +54,7 @@ void posorder(no *raiz){
     }
 }
 
-no* maiorElemento(no *raiz){
+no* maior(no *raiz){
     while(raiz->dir != NULL){
         raiz = raiz->dir;
     }
@@ -62,7 +62,7 @@ no* maiorElemento(no *raiz){
 }
 
 
-no* menorElemento(no *raiz){
+no* menor(no *raiz){
     while(raiz->esq != NULL){
         raiz = raiz->esq;
     }
@@ -85,13 +85,13 @@ int altura(no* raiz){
     return 1 + MAX(altura(raiz->esq), altura(raiz->dir));
 }
 
-int quantElementos(no *raiz){
+int quantidade_elementos(no *raiz){
     if(raiz == NULL){
         return 0;
     }
     else{
-        int contEsq = quantElementos(raiz->esq);
-        int contDir = quantElementos(raiz->dir);
+        int contEsq = quantidade_elementos(raiz->esq);
+        int contDir = quantidade_elementos(raiz->dir);
         return contEsq + contDir + 1;
     }
 }
@@ -126,7 +126,7 @@ no* remover(no *raiz, int chave){
             return raiz->dir;    
         }
 
-        raiz->chave = maiorElemento(raiz->esq);
+        raiz->chave = maior(raiz->esq);
         raiz->esq = remover(raiz->esq, raiz->chave);
         return raiz;
     }
@@ -137,6 +137,87 @@ no* remover(no *raiz, int chave){
     else{
         raiz->esq = remover(raiz->esq, chave);
     }
+}
+
+no* predecessor(no *raiz, int chave, no* arv){
+    if(raiz == NULL){
+		return -1;
+	}
+    else if(raiz != NULL){
+		if(chave < raiz->chave){
+			predecessor(raiz->esq,chave,arv);
+		}
+		else if(chave > raiz->chave){
+			if (raiz->chave > arv->chave){
+				arv->chave = raiz->chave;	
+			}
+			predecessor(raiz->dir,chave,arv);
+		}
+        else{
+			if(raiz->esq == NULL){
+				return arv->chave;
+			}
+            else {
+				if(arv->chave > raiz->esq->chave){
+					return arv->chave;
+				}
+                else{
+					raiz =raiz->esq;
+					while (raiz->dir != NULL){
+						raiz = raiz->dir;
+					}
+					return raiz->chave;
+				}
+			}
+		}
+
+	}
+}
+
+no* sucessor(no *raiz, int chave, no* novo){
+    if(raiz == NULL){
+		return -1;
+	}else{
+		if(novo->chave < chave){
+			novo->chave = raiz->chave;
+		}
+		if(chave < raiz->chave){
+			if(raiz->chave < novo->chave){
+				novo->chave = raiz->chave;
+			}
+			 sucessor(raiz->esq, chave, novo);
+		}
+        else if(chave > raiz->chave){
+			sucessor(raiz->dir, chave, novo);
+		}
+        else{
+			if(raiz->dir == NULL && novo->chave <= chave){
+				return -1;
+			}
+            else if(raiz->dir == NULL){
+				return novo->chave;
+			}
+            else if(novo->chave <= chave){
+				raiz = raiz->dir;
+				while (raiz->esq != NULL){
+					raiz = raiz->esq;
+				}
+				return raiz->chave;
+			}
+            else{
+				if(raiz->dir->chave < novo->chave){
+				raiz = raiz->dir;
+					while (raiz->esq != NULL){
+						raiz = raiz->esq;
+					}
+				return raiz->chave;
+				} 
+                else{
+					return novo->chave;
+				}
+			}
+		}
+	}
 }
 
 
