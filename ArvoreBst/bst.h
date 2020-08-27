@@ -10,11 +10,11 @@ typedef struct no{
 no* inserir(no *raiz, int chave);
 no* remover(no *raiz, int chave);
 
-no* maior(no *raiz);
-no* menor(no *raiz);
+int maior(no *raiz);
+int menor(no *raiz);
 
-no* predecessor(no *raiz, int chave, no* novo);
-no* sucessor(no *raiz, int chave, no* novo);
+int predecessor(no *raiz, int chave, no* novo);
+int sucessor(no *raiz, int chave, no* novo);
 
 int quantidade_elementos(no *raiz);
 int existe(no *raiz, int chave);    //1 ou 0

@@ -54,7 +54,7 @@ void posorder(no *raiz){
     }
 }
 
-no* maior(no *raiz){
+int maior(no *raiz){
     while(raiz->dir != NULL){
         raiz = raiz->dir;
     }
@@ -62,11 +62,11 @@ no* maior(no *raiz){
 }
 
 
-no* menor(no *raiz){
+int menor(no *raiz){
     while(raiz->esq != NULL){
         raiz = raiz->esq;
     }
-    printf("[%d]", raiz->chave);
+    return raiz->chave;
 }
 
 int MAX(int valorA, int valorB){
@@ -139,30 +139,30 @@ no* remover(no *raiz, int chave){
     }
 }
 
-no* predecessor(no *raiz, int chave, no* arv){
+int predecessor(no *raiz, int chave, no* novo){
     if(raiz == NULL){
 		return -1;
 	}
     else if(raiz != NULL){
 		if(chave < raiz->chave){
-			predecessor(raiz->esq,chave,arv);
+			predecessor(raiz->esq, chave, novo);
 		}
 		else if(chave > raiz->chave){
-			if (raiz->chave > arv->chave){
-				arv->chave = raiz->chave;	
+			if (raiz->chave > novo->chave){
+				novo->chave = raiz->chave;	
 			}
-			predecessor(raiz->dir,chave,arv);
+			predecessor(raiz->dir, chave, novo);
 		}
         else{
 			if(raiz->esq == NULL){
-				return arv->chave;
+				return novo->chave;
 			}
             else {
-				if(arv->chave > raiz->esq->chave){
-					return arv->chave;
+				if(novo->chave > raiz->esq->chave){
+					return novo->chave;
 				}
                 else{
-					raiz =raiz->esq;
+					raiz = raiz->esq;
 					while (raiz->dir != NULL){
 						raiz = raiz->dir;
 					}
@@ -174,7 +174,7 @@ no* predecessor(no *raiz, int chave, no* arv){
 	}
 }
 
-no* sucessor(no *raiz, int chave, no* novo){
+int sucessor(no *raiz, int chave, no* novo){
     if(raiz == NULL){
 		return -1;
 	}else{

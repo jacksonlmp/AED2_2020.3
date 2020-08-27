@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
                 break;
             case 6:
                 //Menor-Elemento
-                menor(arvore);
+                printf("[%d]", menor(arvore));
                 break;
             case 7:
                 //Altura
