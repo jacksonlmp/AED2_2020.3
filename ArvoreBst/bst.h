@@ -7,22 +7,22 @@ typedef struct no{
     struct no *dir;
 }no;
 
-no* inserir(no *raiz, int chave);
-no* remover(no *raiz, int chave);
+no* inserir(no *raiz, int chave); // ok
+no* remover(no *raiz, int chave); // ok
 
-int maior(no *raiz);
-int menor(no *raiz);
+no* maior(no *raiz);
+no* menor(no *raiz);
 
-int predecessor(no *raiz, int chave, no* novo);
-int sucessor(no *raiz, int chave, no* novo);
+no* predecessor(no *raiz, int chave, no* novo);
+no* sucessor(no *raiz, int chave, no* novo);
 
-int quantidade_elementos(no *raiz);
+int quantidade_elementos(no *raiz); // ok
 int existe(no *raiz, int chave);    //1 ou 0
-int altura(no *raiz);
+int altura(no *raiz);               // ok
 int MAX(int valorA, int valorB);
 
-void preorder(no *raiz);
-void inorder(no *raiz);
-void posorder(no *raiz);
+void preorder(no *raiz);    //ok
+void inorder(no *raiz);     // ok
+void posorder(no *raiz);    // ok
 
 #endif
