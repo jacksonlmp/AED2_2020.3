@@ -155,6 +155,7 @@ no* predecessor(no *raiz, int chave, no* novo){
 		}
         else{
 			if(raiz->esq == NULL){
+                novo->chave = chave;
 				return novo;
 			}
             else {
@@ -191,7 +192,7 @@ no* sucessor(no *raiz, int chave, no* novo){
 			sucessor(raiz->dir, chave, novo);
 		}
         else{
-			if(raiz->dir == NULL && novo->chave <= chave){
+			if(raiz->dir == NULL && novo->chave < chave){
 				return NULL;
 			}
             else if(raiz->dir == NULL){
@@ -205,7 +206,7 @@ no* sucessor(no *raiz, int chave, no* novo){
 				return raiz;
 			}
             else{
-				if(raiz->dir->chave < novo->chave){
+				if(novo->chave <= chave || raiz->dir->chave < novo->chave){
 				raiz = raiz->dir;
 					while (raiz->esq != NULL){
 						raiz = raiz->esq;
