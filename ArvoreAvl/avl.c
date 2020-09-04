@@ -115,9 +115,51 @@ arvore remover(int valor, arvore raiz, int *diminuiu){
     }
     if(valor > raiz->dado){
         raiz->dir = remover(valor, raiz->dir, diminuiu);
+        if(*diminuiu){
+            switch(raiz->fb){
+                case 0:
+                    raiz->fb = -1;
+                    *diminuiu = 0;
+                    break;
+                case 1:
+                    raiz->fb = 0;
+                    *diminuiu = 1;
+                    break;
+                case -1:
+                    if(raiz->esq->fb == 0){
+                        *diminuiu = 0;                    
+                    }
+                    else{
+                        *diminuiu = 1;        
+                    }
+                    return rotacionar(raiz);
+                    break;
+            }
+        }        
     }
     else{
         raiz->esq = remover(valor, raiz->esq, diminuiu);
+        if(*diminuiu){
+            switch(raiz->fb){
+                case 0:
+                    raiz->fb = 1;
+                    *diminuiu = 0;
+                    break;
+                case 1:
+                    if(raiz->dir->fb == 0){
+                        *diminuiu = 0;    
+                    }
+                    else{
+                        *diminuiu = 1;                    
+                    }
+                    return rotacionar(raiz);
+                    break;
+                case -1:
+                    raiz->fb = 0;
+                    *diminuiu = 1;
+                    break;
+            }
+        }
     }
     return raiz;
 }
