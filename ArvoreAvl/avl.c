@@ -44,7 +44,23 @@ arvore adicionar (int valor, arvore raiz, int *cresceu){
         
     }
     else{
-        //Elemento menor que raiz relativa, fazer caso simétrico
+        raiz->esq = adicionar(valor, raiz->esq, cresceu);
+        if(*cresceu){
+            switch(raiz->fb){
+                case 0:
+                    raiz->fb = -1;
+                    *cresceu = 1;
+                    break;
+                case -1:
+                    raiz->fb = -2;
+                    *cresceu = 0;
+                    return rotacionar(raiz);
+                case 1:
+                    raiz->fb = 0;
+                    cresceu = 0;
+                    break;
+            }
+        }
     }
     return raiz;
 }
@@ -53,21 +69,35 @@ arvore rotacionar(arvore raiz){
     //FB > 0 => Rotacao esquerda
     if(raiz->fb > 0){
         switch(raiz->dir->fb){
-            case 0:             //"Conta" como rotação simples
-            case 1:             //Só ocorre no remover
+            case 0:         
                 return rotacao_simples_esquerda(raiz);
+                break;   
+            case 1:             
+                return rotacao_simples_esquerda(raiz);
+                break;
             case -1:
                 return rotacao_dupla_esquerda(raiz);
+                break;
         }
     }
     else{
-        //Implementar Simétrico
+        switch(raiz->esq->fb){
+            case 0:
+                return rotacao_simples_direita(raiz);
+                break;
+            case 1:
+                return rotacao_dupla_direita(raiz);
+                break;
+            case -1:
+                return rotacao_simples_direita(raiz);
+                break;
+        }
     }
 }
 
 //Incluir variável de controle "diminuir" similiar a "cresceu" de adicionar
 
-arvore remover(int valor, arvore raiz){
+arvore remover(int valor, arvore raiz, int *diminuiu){
     if(raiz == NULL){
         return NULL;
     }
@@ -80,14 +110,14 @@ arvore remover(int valor, arvore raiz){
             return raiz->esq;
         }
         raiz->dado = maior_elemento(raiz->esq);
-        raiz->esq = remover(raiz->dado, raiz->esq);
+        raiz->esq = remover(raiz->dado, raiz->esq, diminuiu);
         return raiz;
     }
     if(valor > raiz->dado){
-        raiz->dir = remover(valor, raiz->dir);
+        raiz->dir = remover(valor, raiz->dir, diminuiu);
     }
     else{
-        raiz->esq = remover(valor, raiz->esq);
+        raiz->esq = remover(valor, raiz->esq, diminuiu);
     }
     return raiz;
 }
@@ -120,16 +150,34 @@ arvore rotacao_simples_esquerda(arvore raiz){
     return u;
 }
 
+arvore rotacao_simples_direita(arvore raiz) {
+	arvore u, t2, p;
+
+    u = p->esq;
+    t2 = u->dir;
+
+    //Atualiza os Ponteiros
+    p->esq = t2;
+    u->dir = p;
+
+    if(u->fb ==0){
+        p->fb = -1;
+        u->fb = 1;
+    }
+    else{
+        p->fb = 0;
+        u->fb = 0;
+    }
+    return u;
+}
+
 
 arvore rotacao_dupla_esquerda(arvore raiz) {
 	printf("rotacao dupla esquerda\n");
 	return raiz;
 }
 
-arvore rotacao_simples_direita(arvore raiz) {
-	printf("rotacao simples esquerda\n");
-	return raiz;
-}
+
 arvore rotacao_dupla_direita(arvore raiz) {
 	printf("rotacao dupla direita\n");
 	return raiz;
