@@ -173,14 +173,74 @@ arvore rotacao_simples_direita(arvore raiz) {
 
 
 arvore rotacao_dupla_esquerda(arvore raiz) {
-	printf("rotacao dupla esquerda\n");
-	return raiz;
+	arvore u, v, p, t2, t3;
+
+    u = p->dir;
+    v = u->esq;
+
+    t2 = v->esq;
+    t3 = v->dir;
+
+    u->esq = t3;
+    v->dir = u;
+    p->dir = v;
+
+    p->dir = t2;
+    v->esq = p;
+
+    switch(v->fb){
+        case 0:
+            p->fb = 0;
+            u->fb = 0;
+            break;
+        case 1:
+            u->fb = 0;
+            p->fb = -1;
+            v->fb = 0;
+            break;
+        case -1:
+            u->fb = 1;
+            p->fb = 0;
+            v->fb = 0;
+            break;
+    }
+    return v;
 }
 
 
 arvore rotacao_dupla_direita(arvore raiz) {
-	printf("rotacao dupla direita\n");
-	return raiz;
+	arvore u, v, p, t2, t3;
+
+    u = p->esq;
+    v = u->dir;
+
+    t2 = v->esq;
+    t3 = v->dir;
+
+    u->dir = t2;
+    v->esq = u;
+    p->esq = v;
+
+    p->esq = t3;
+    v->dir = p;
+
+    switch(v->fb){
+        case 0:
+            u->fb = 0;
+            p->fb = 0;
+            break;
+        case 1:
+            u->fb = -1;
+            p->fb = 0;
+            v->fb = 0;
+            break;
+        case -1:
+            u->fb = 0;
+            p->fb = 1;
+            v->fb = 0;
+            break;
+    }
+    return v;
 }
 
 void imprimir(arvore raiz) {
@@ -233,7 +293,7 @@ int menor_elemento(arvore raiz){
         return raiz->dado;
     }
     else{
-        return maior_elemento(raiz->esq);
+        return menor_elemento(raiz->esq);
     }
 }
 
