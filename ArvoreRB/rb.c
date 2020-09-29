@@ -193,7 +193,7 @@ void retira_duplo_preto(arvore *raiz, arvore elemento){
 void rotacao_simples_direita(arvore *raiz, arvore pivo){
     arvore u, t1;
     u = pivo->esq;
-    t1 = u->esq;
+    t1 = u->dir;
 
     int posicao_pivo_esq = eh_filho_esquerdo(pivo);
     //Atualiza Ponteiro    
@@ -276,17 +276,30 @@ void ajustar(arvore *raiz, arvore elemento){
         }
 
         //Caso 2b: Rotacao Simples Esquerda
-        if(1){
-            continue;    
+        if(eh_filho_esquerdo(elemento) && !eh_filho_esquerdo(elemento->pai)){
+            rotacao_simples_esquerda(raiz, elemento->pai->pai);
+            elemento->pai->cor = PRETO;
+            elemento->pai->esq->cor = VERMELHO;
+            continue; 
         }
 
         //Caso 3a: Rotacao Dupla Direita
-        if(1){
+        if(!eh_filho_esquerdo(elemento) && eh_filho_esquerdo(elemento->pai)){
+            rotacao_simples_esquerda(raiz, elemento->pai);
+            rotacao_simples_direita(raiz, elemento->pai);
+            elemento->cor = PRETO;
+            elemento->dir->cor = VERMELHO;
+            elemento->esq->cor = VERMELHO;         
             continue;
         }
 
         //Caso 3b: Rotacao Dupla Esquerda
-        if(1){
+        if(eh_filho_esquerdo(elemento) && !eh_filho_esquerdo(elemento->pai)){
+            rotacao_simples_direita(raiz, elemento->pai);
+            rotacao_simples_esquerda(raiz, elemento->pai);
+            elemento->cor = PRETO;
+            elemento->dir->cor = VERMELHO;
+            elemento->esq->cor = VERMELHO;            
             continue;
         }
     }
@@ -296,7 +309,37 @@ void ajustar(arvore *raiz, arvore elemento){
 }
 
 void reajustar(arvore *raiz, arvore elemento){
-    printf("REAJUSTAR");
+    //Caso 1
+    if(eh_raiz(elemento)){
+        elemento->cor = PRETO;
+        return;
+    }
+
+    //Caso 2
+    if(cor(elemento->pai) == PRETO && cor(irmao(elemento)) == VERMELHO && cor(irmao(elemento)->dir) == PRETO && cor(irmao(elemento)->esq) == PRETO){
+        if(eh_filho_esquerdo(elemento)){
+            rotacao_simples_esquerda(raiz, elemento->pai);
+        }
+        else{
+            rotacao_simples_direita(raiz, elemento->pai);        
+        }
+        elemento->pai->pai->cor = PRETO;
+        elemento->pai->cor = VERMELHO;
+        reajustar(raiz, elemento);
+        return;
+    }
+
+    //Caso 3   
+
+    //Caso 4
+
+    //Caso 5a
+
+    //Caso 5b
+
+    //Caso 6a
+
+    //Caso 6b
 }
 
 void remover(int valor, arvore *raiz){
