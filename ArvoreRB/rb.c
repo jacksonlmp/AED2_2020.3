@@ -201,24 +201,24 @@ void rotacao_simples_direita(arvore *raiz, arvore pivo){
 
     if(t1 != NULL){
         t1->pai = pivo;
-        u->dir = pivo;
-        u->pai = pivo->pai;
-        pivo->pai = u;
+    }
+    u->dir = pivo;
+    u->pai = pivo->pai;
+    pivo->pai = u;
 
-        //Mudança de Cores
-        pivo->cor = VERMELHO;
-        u->cor = PRETO;
-    
-        if(eh_raiz(u)){
-            *raiz = u;
+    //Mudança de Cores
+    pivo->cor = VERMELHO;
+    u->cor = PRETO;
+
+    if(eh_raiz(u)){
+        *raiz = u;
+    }
+    else{
+        if(posicao_pivo_esq){
+            u->pai->esq = u;
         }
         else{
-            if(posicao_pivo_esq){
-                u->pai->esq = u;
-            }
-            else{
-                u->pai->dir = u;    
-            }
+            u->pai->dir = u;    
         }
     }
 }
@@ -330,16 +330,84 @@ void reajustar(arvore *raiz, arvore elemento){
     }
 
     //Caso 3   
+    if(cor(elemento->pai) == PRETO && cor(irmao(elemento)) == PRETO && (cor(irmao(elemento)->dir) == PRETO || irmao(elemento)->dir == NULL) && (cor(irmao(elemento)->esq) == PRETO || irmao(elemento)->esq == NULL)){
+        irmao(elemento)->cor = VERMELHO;
+        retira_duplo_preto(raiz, elemento);
+        reajustar(raiz, elemento->pai);
+        return;
+    }
 
     //Caso 4
+    if(cor(elemento->pai) == VERMELHO && (cor(irmao(elemento)) == PRETO || irmao(elemento) == NULL) && (cor(irmao(elemento)->dir) == PRETO || irmao(elemento)->dir == NULL) && (cor(irmao(elemento)->esq) == PRETO || 
+    irmao(elemento)->esq == NULL)){
+        elemento->pai->cor = PRETO;
+        irmao(elemento)->cor = VERMELHO;
+        retira_duplo_preto(raiz, elemento);
+        return;
+    }
+    
 
     //Caso 5a
-
+    if(eh_filho_esquerdo(elemento) && cor(irmao(elemento)) == PRETO &&
+		(cor(irmao(elemento) -> dir) == PRETO || irmao(elemento) -> dir == NULL) && cor(irmao(elemento) -> esq) == VERMELHO){
+			
+			rotacao_simples_direita(raiz, irmao(elemento));
+			irmao(elemento) -> cor = PRETO;
+			irmao(elemento) -> dir -> cor = VERMELHO;
+			
+			reajustar(raiz, elemento);	
+		
+		return;
+	}
     //Caso 5b
-
+    if(!eh_filho_esquerdo(elemento) && cor(irmao(elemento)) == PRETO &&
+		(cor(irmao(elemento) -> esq) == PRETO || irmao(elemento) -> esq == NULL) 		&& cor(irmao(elemento) -> dir) == VERMELHO){
+		
+			rotacao_simples_esquerda(raiz, irmao(elemento));
+			irmao(elemento) -> cor = PRETO;
+			irmao(elemento) -> esq -> cor = VERMELHO;
+			
+			reajustar(raiz, elemento);
+		
+		return;
+	}
     //Caso 6a
+    if(eh_filho_esquerdo(elemento) && 
+		cor(irmao(elemento)) == PRETO && 
+		cor(irmao(elemento) -> dir) == VERMELHO){
+		
+		enum cor cor_original_pai = cor(elemento -> pai);
+		
+		rotacao_simples_esquerda(raiz, elemento -> pai);
+		
+		elemento -> pai -> pai -> cor = cor_original_pai;
+		elemento -> pai -> cor = PRETO;
+		tio(elemento) -> cor = PRETO;		
+		
+		retira_duplo_preto(raiz, elemento);
 
+		return;
+	
+	}
     //Caso 6b
+    if(!eh_filho_esquerdo(elemento) && 
+		cor(irmao(elemento)) == PRETO && 
+		cor(irmao(elemento) -> esq) == VERMELHO){
+
+		enum cor cor_original_pai = cor(elemento -> pai);
+		
+		rotacao_simples_direita(raiz, elemento -> pai);
+		
+		elemento -> pai -> pai -> cor = cor_original_pai;
+		elemento -> pai -> cor = PRETO;
+		tio(elemento) -> cor = PRETO;		
+		
+		retira_duplo_preto(raiz, elemento);
+
+		return;
+	
+	}
+	
 }
 
 void remover(int valor, arvore *raiz){
