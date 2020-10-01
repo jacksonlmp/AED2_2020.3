@@ -316,10 +316,7 @@ void reajustar(arvore *raiz, arvore elemento){
     }
 
     //Caso 2
-    if(cor(elemento->pai) == PRETO &&
-	 cor(irmao(elemento)) == VERMELHO &&
-	 (cor(irmao(elemento)->dir) == PRETO || irmao(elemento)->dir == NULL) &&
-	 (cor(irmao(elemento)->esq) == PRETO || irmao(elemento)->esq == NULL)){
+    if(irmao(elemento)->dir == NULL || irmao(elemento)->esq == NULL || cor(elemento->pai) == PRETO && cor(irmao(elemento)) == VERMELHO && (cor(irmao(elemento)->dir) == PRETO ) && (cor(irmao(elemento)->esq) == PRETO)){
         if(eh_filho_esquerdo(elemento)){
             rotacao_simples_esquerda(raiz, elemento->pai);
         }
@@ -333,7 +330,7 @@ void reajustar(arvore *raiz, arvore elemento){
     }
 
     //Caso 3   
-    if(cor(elemento->pai) == PRETO && cor(irmao(elemento)) == PRETO && (cor(irmao(elemento)->dir) == PRETO || irmao(elemento)->dir == NULL) && (cor(irmao(elemento)->esq) == PRETO || irmao(elemento)->esq == NULL)){
+    if(irmao(elemento)->dir == NULL || irmao(elemento)->esq == NULL || cor(elemento->pai) == PRETO && cor(irmao(elemento)) == PRETO && (cor(irmao(elemento)->dir) == PRETO ) && (cor(irmao(elemento)->esq) == PRETO )){
         irmao(elemento)->cor = VERMELHO;
         retira_duplo_preto(raiz, elemento);
         reajustar(raiz, elemento->pai);
@@ -341,8 +338,7 @@ void reajustar(arvore *raiz, arvore elemento){
     }
 
     //Caso 4
-    if(cor(elemento->pai) == VERMELHO && (cor(irmao(elemento)) == PRETO || irmao(elemento) == NULL) && (cor(irmao(elemento)->dir) == PRETO || irmao(elemento)->dir == NULL) && (cor(irmao(elemento)->esq) == PRETO || 
-    irmao(elemento)->esq == NULL)){
+    if(irmao(elemento)->esq == NULL || irmao(elemento) == NULL || irmao(elemento)->dir == NULL || cor(elemento->pai) == VERMELHO && (cor(irmao(elemento)) == PRETO ) && (cor(irmao(elemento)->dir) == PRETO) && (cor(irmao(elemento)->esq) == PRETO)){
         elemento->pai->cor = PRETO;
         irmao(elemento)->cor = VERMELHO;
         retira_duplo_preto(raiz, elemento);
@@ -351,7 +347,7 @@ void reajustar(arvore *raiz, arvore elemento){
     
 
     //Caso 5a
-    if(eh_filho_esquerdo(elemento) && cor(irmao(elemento)) == PRETO &&	(cor(irmao(elemento)->dir) == PRETO || irmao(elemento)->dir == NULL) && cor(irmao(elemento)->esq) == VERMELHO){			
+    if(irmao(elemento)->dir == NULL || eh_filho_esquerdo(elemento) && cor(irmao(elemento)) == PRETO &&	(cor(irmao(elemento)->dir) == PRETO) && cor(irmao(elemento)->esq) == VERMELHO){			
 			rotacao_simples_direita(raiz, irmao(elemento));
 			irmao(elemento) -> cor = PRETO;
 			irmao(elemento) -> dir -> cor = VERMELHO;
@@ -359,7 +355,7 @@ void reajustar(arvore *raiz, arvore elemento){
 		    return;
 	}
     //Caso 5b
-    if(!eh_filho_esquerdo(elemento) && cor(irmao(elemento)) == PRETO &&	(cor(irmao(elemento)->esq) == PRETO || irmao(elemento)->esq == NULL) && cor(irmao(elemento)->dir) == VERMELHO){	
+    if(irmao(elemento)->esq == NULL || !eh_filho_esquerdo(elemento) && cor(irmao(elemento)) == PRETO &&	(cor(irmao(elemento)->esq) == PRETO ) && cor(irmao(elemento)->dir) == VERMELHO){	
 			rotacao_simples_esquerda(raiz, irmao(elemento));
 			irmao(elemento) -> cor = PRETO;
 			irmao(elemento) -> esq -> cor = VERMELHO;
@@ -381,7 +377,7 @@ void reajustar(arvore *raiz, arvore elemento){
 	
 	}
     //Caso 6b
-    if(!eh_filho_esquerdo(elemento) && cor(irmao(elemento)) == PRETO && cor(irmao(elemento) -> esq) == VERMELHO){
+    if(!eh_filho_esquerdo(elemento) && cor(irmao(elemento)) == PRETO && cor(irmao(elemento)->esq) == VERMELHO){
 		enum cor cor_original_pai = cor(elemento -> pai);
 		rotacao_simples_direita(raiz, elemento -> pai);
 		
@@ -482,6 +478,7 @@ void remover(int valor, arvore *raiz){
     }
 
 }
+
 
 
 
