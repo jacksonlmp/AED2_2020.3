@@ -332,7 +332,8 @@ void ajustar(arvore *raiz, arvore elemento){
 			} 
 
 			//Caso 2
-			if(eh_filho_esquerdo(elemento) && eh_filho_esquerdo(elemento->pai)) {
+			if(eh_filho_esquerdo(elemento) &&
+             eh_filho_esquerdo(elemento->pai)) {
 				rotacao_simples_direita(raiz, elemento->pai->pai);
 				elemento->pai->cor = PRETO;
 				elemento->pai->dir->cor = VERMELHO;
@@ -340,7 +341,8 @@ void ajustar(arvore *raiz, arvore elemento){
 			}
 
 			//Caso 2b
-			if(!eh_filho_esquerdo(elemento) && !eh_filho_esquerdo(elemento->pai)) {
+			if(!eh_filho_esquerdo(elemento) &&
+             !eh_filho_esquerdo(elemento->pai)) {
 				rotacao_simples_esquerda(raiz, elemento->pai->pai);
 				elemento->pai->cor = PRETO;
 				elemento->pai->esq->cor = VERMELHO;
@@ -348,7 +350,8 @@ void ajustar(arvore *raiz, arvore elemento){
 			}
 
 			//Caso 3a
-			if(!eh_filho_esquerdo(elemento) && eh_filho_esquerdo(elemento->pai)) {
+			if(!eh_filho_esquerdo(elemento) && 
+             eh_filho_esquerdo(elemento->pai)) {
 			  rotacao_simples_esquerda(raiz, elemento->pai);
 				rotacao_simples_direita(raiz, elemento -> pai);
 				elemento->cor = PRETO;
@@ -358,9 +361,10 @@ void ajustar(arvore *raiz, arvore elemento){
 			}
 					
 			//Caso 3b
-			if(eh_filho_esquerdo(elemento) && !eh_filho_esquerdo(elemento->pai)) {
+			if(eh_filho_esquerdo(elemento) && 
+            !eh_filho_esquerdo(elemento->pai)) {
 				rotacao_simples_direita(raiz, elemento->pai);
-				rotacao_simples_esquerda(raiz, elemento -> pai);
+				rotacao_simples_esquerda(raiz, elemento->pai);
 				elemento->cor = PRETO;
 				elemento->dir->cor = VERMELHO;
 				elemento->esq->cor = VERMELHO;
