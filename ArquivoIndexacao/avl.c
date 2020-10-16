@@ -11,7 +11,7 @@ void inicializar(arvore *raiz){
 //Raiz - Raiz da arvore onde o elemento será inserido
 //Cresceu - Variavel de controle que ajuda calcular o Fator de Balanço
 
-arvore adicionar (int valor, arvore raiz, int *cresceu){
+arvore adicionar(int valor, arvore raiz, int *cresceu){
     //Caso base - árvore vazia ou folha
     if(raiz == NULL){
         arvore novo = (arvore) malloc(sizeof(struct no_avl));
@@ -364,27 +364,25 @@ void in_order(arvore raiz) {
 	}
 }
 
-tipo_dado * ler_dados() {
-	tipo_dado *novo = (tipo_dado *) malloc(sizeof(tipo_dado));
-	char * buffer = (char *) malloc(256 * sizeof(char));
+dado *ler_dados() {
+	dado *novo = (dado *) malloc(sizeof(dado));
+	char *buffer = (char *) malloc(256 * sizeof(char));
 
 	getchar() ;
 	printf("Titulo: ");
 	fgets(buffer, 255,  stdin);
 	tirar_enter(buffer);
-/*	novo->titulo = (char *) malloc ((strlen(buffer) + 1) * sizeof(char));
-	strcpy(novo->titulo, buffer);*/
-	novo->titulo = strdup(buffer);
+    strcpy(novo->titulo, strdup(buffer));
 
 	printf("Autor: ");
 	fgets(buffer, 255,  stdin);
 	tirar_enter(buffer);
-	novo->autor = strdup(buffer);
+    strcpy(novo->autor, strdup(buffer));
 
 	printf("Isbn: ");
 	fgets(buffer, 255,  stdin);
 	tirar_enter(buffer);
-	novo->isbn = strdup(buffer);
+    strcpy(novo->isbn, strdup(buffer));
 
 	printf("Codigo: ");
 	scanf("%d", &novo->codigo);
@@ -401,36 +399,87 @@ void salvar_arquivo(char *nome, arvore a) {
 	FILE *arq;
 	arq = fopen(nome, "wb");
 	if(arq != NULL) {
-		salvar_auxiliar(a, arq);
-		fclose(arq);
+		salvar_auxiliar(a, arq);	      	
+        fclose(arq); 
 	}
+      
 }
 
 void salvar_auxiliar(arvore raiz, FILE *arq){
-	if(raiz != NULL) {
-				
-		fwrite(raiz->dado, sizeof(tipo_dado), 1, arq);
+	if(raiz != NULL) {				
+		fwrite(raiz->dado, sizeof(dado), 1, arq);
 		salvar_auxiliar(raiz->esq, arq);
 		salvar_auxiliar(raiz->dir, arq);
 	}
-
 }
 
 arvore carregar_arquivo(char *nome, arvore a) {
 	FILE *arq;
 	arq = fopen(nome, "rb");
-	tipo_dado * temp;
+	dado *temp;
+    dado *cresceu;
 
 	if(arq != NULL) {
-		temp = (tipo_dado *) malloc(sizeof(tipo_dado));
-		while(fread(temp, sizeof(tipo_dado), 1, arq)) {			
+		temp = (dado *) malloc(sizeof(dado));
+		while(fread(temp, sizeof(dado), 1, arq)) {			
 			a = adicionar(temp, a, cresceu);			
-			temp = (tipo_dado *) malloc(sizeof(tipo_dado));
+			temp = (dado *) malloc(sizeof(tipo_dado));
 
 		}
 		fclose(arq);
 	}
 	return a;
+}
+
+void adicionarLivro(tabela *tab, dado *livro){
+    dado *cresceu;
+	if(tab->arquivo_dados != NULL) {
+		fseek(tab->arquivo_dados, 0L, SEEK_END);
+		tipo_dado * novo = (dado *) malloc(sizeof(dado));
+
+		novo->chave = livro->codigo;
+		novo->indice = ftell(tab->arquivo_dados);
+		
+		fprintf(tab->arquivo_dados,"%d|%s|%s|%s\n", livro->codigo, livro->titulo, livro->autor, livro->isbn);
+		tab->indices = adicionar(novo, tab->indices, cresceu);
+	}
+}
+
+void finalizar (tabela *tab) {
+	fclose(tab->arquivo_dados);
+	salvar_arquivo("indices.dat", tab->indices);
+}
+
+int inicializarTabela(tabela *tab) {
+	inicializar(&tab->indices);	
+	tab->arquivo_dados = fopen("dados.dat", "a+b");
+	tab->indices = carregar_arquivo("indices.dat", tab->indices);
+
+	if(tab->arquivo_dados != NULL)
+		return 1;
+	else
+		return 0;
+}
+
+void imprimir_elemento_arq(arvore raiz, tabela * tab) {
+	fseek(tab->arquivo_dados, raiz->dado->indice, SEEK_SET);
+	char * buffer = (char *) malloc(256 * sizeof(char));
+	char *aux;
+
+	fscanf(tab->arquivo_dados," %[^\n]s",buffer); 
+	aux = strtok(buffer,"|");
+
+	while(aux != NULL){ 
+		printf("%s",aux);
+		aux = strtok(NULL,"|");
+		if(aux != NULL){
+			printf(",");
+		}
+	}
+	printf("\n");
+	free(buffer);
+	free(aux);
+
 }
 
 

@@ -56,9 +56,11 @@ arvore rotacao_dupla_esquerda(arvore raiz);
 
 void salvar_arquivo(char *nome, arvore a);
 void salvar_auxiliar(arvore raiz, FILE *arq);
-arvore carregar_arquivo(char *nome, arvore a);
-tipo_dado * ler_dados();
 void tirar_enter(char *string);
+void imprimir_elemento_arq(arvore raiz, tabela * tab);
+arvore carregar_arquivo(char *nome, arvore a);
+dado *ler_dados();
+
 
 #endif
 
